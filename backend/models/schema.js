@@ -1,5 +1,5 @@
-import mongoose, { Schema } from "mongoose";
-mongoose.connect("mongodb://localhost:27017/taskManagementSystemDb")
+const mongoose = require("mongoose");
+const {Schema} = require("mongoose");
 
 // user schema with 2 roles
 
@@ -8,6 +8,7 @@ const userSchema = new Schema(
     username: {
       type: String,
       required: true,
+      trim: true,
     },
 
     password: {
@@ -31,6 +32,7 @@ const taskRoomSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+    trim: true,
   },
   description: {
     type: String,

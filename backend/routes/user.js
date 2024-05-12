@@ -46,6 +46,13 @@ router.post("/signup", async (req, res) => {
       role,
     });
 
+    if (role === "employee") {
+      const employee = await Employee.create({
+        userId: user._id,
+        username: user.username,
+      });
+    }
+
     const token = jwt.sign(
       {
         userId: user._id,
@@ -74,13 +81,13 @@ router.post("/signup", async (req, res) => {
 });
 
 //  user login
-
+//  craeting login schema with zod for validation
 const loginSchema = zod.object({
   username: zod.string().min(3).max(20),
   password: zod.string().min(6).max(20),
 });
 
-router.post("/login", async (req, res) => {
+router.post("/signin", async (req, res) => {
   try {
     const { username, password } = req.body;
     const { success } = loginSchema.safeParse({ username, password });

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require("express");
-const loginHandler = require("./routes/login");
+const mainRouter = require("./routes/index");
 const { json } = require("body-parser");
 const mongoose = require("mongoose");
 
@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect(process.env.MONGODB_URL);  // from .env
 
-app.use("/api/v1", loginHandler);
+app.use("/api/v1", mainRouter);
 
 app.listen(4000);
 console.log("server runnning at port 4000");

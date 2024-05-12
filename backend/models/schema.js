@@ -47,7 +47,7 @@ const taskRoomSchema = new Schema({
   ],
 });
 
-// task Schema 
+// task Schema
 const tasksSchema = new Schema({
   taskTitle: {
     type: String,
@@ -67,12 +67,11 @@ const tasksSchema = new Schema({
     required: true,
     enum: ["high", "medium", "low"],
   },
-  taskRoomId:{
-    type:  Schema.Types.ObjectId,
+  taskRoomId: {
+    type: Schema.Types.ObjectId,
     ref: "TaskRoom",
-  }
-})
-
+  },
+});
 
 // Employees Schema
 
@@ -101,5 +100,5 @@ module.exports = {
   User: User,
   TaskRoom: TaskRoom,
   Employee: Employee,
-  Tasks: Tasks
+  Tasks: Tasks,
 };

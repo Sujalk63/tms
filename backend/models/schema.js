@@ -42,7 +42,7 @@ const taskRoomSchema = new Schema({
   employees: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Users", // becuz we need the userId of the employee not the employee id, this is necessary for getting all the rooms in which the employee is added, we signed userId for jwt and not specifically employye schema's objectId so if passed ref as employees we wont be able to get the rooms in which the employee is added 
+      ref: "User", // becuz we need the userId of the employee not the employee id, this is necessary for getting all the rooms in which the employee is added, we signed userId for jwt and not specifically employye schema's objectId so if passed ref as employees we wont be able to get the rooms in which the employee is added 
     },
   ],
 });

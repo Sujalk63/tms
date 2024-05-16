@@ -48,15 +48,12 @@ router.get("/rooms", authMiddleware, async (req, res) => {
   try {
     if (req.user.role == "admin") {
       console.log(req.userId);
-      // Admins can see all rooms
       const taskRooms = await TaskRoom.find();
       res.status(200).json(taskRooms);
     } else if (req.user.role === "employee") {
-      // Employees can only see rooms they are added to
       const taskRooms = await TaskRoom.find({ employees: req.user._id });
       res.status(200).json(taskRooms);
     } else {
-      // Handle other roles or unauthorized access
       res.status(403).json({ error: "Unauthorized access" });
     }
   } catch (err) {
@@ -99,7 +96,6 @@ router.post("/employees", async (req, res) => {
   try {
     const { taskRoomId } = req.body;
 
-    // Find the task room by ID and populate the 'employees' field to get employee details
     const taskRoom = await TaskRoom.findById(taskRoomId).populate({
       path: "employees",
       select: "username", // Selecting only the username field
@@ -108,10 +104,8 @@ router.post("/employees", async (req, res) => {
     if (!taskRoom) {
       return res.status(404).json({ message: "Task room not found" });
     }
-    
-    const employees = taskRoom.employees
 
-    // const username = User.findById(employees) 
+    const employees = taskRoom.employees;
 
     res.status(200).json(employees);
   } catch (err) {
@@ -149,13 +143,8 @@ router.post("/createTasks", isAdmin, async (req, res) => {
 // getting tasks
 router.post("/tasks", async (req, res) => {
   try {
-    // const tasks = await Tasks.find();
     const { taskRoomId } = req.body;
     const taskRoom = await TaskRoom.findById(taskRoomId).populate("tasks");
-    // const taskRoom = await TaskRoom.findById(taskRoomId).populate({
-    //   path: "tasks",
-    //   select: "taskTitle taskDescription taskStatus priority", // Selecting only the fields you want to display
-    // });
 
     const tasksId = taskRoom.tasks;
 
@@ -180,7 +169,6 @@ router.delete("/deleteTaskRoom", isAdmin, async (req, res) => {
   try {
     const { roomId } = req.body;
 
-    // Find the task room by ID and delete it
     const deletedRoom = await TaskRoom.findByIdAndDelete(roomId);
 
     if (!deletedRoom) {
@@ -199,7 +187,6 @@ router.delete("/deleteTask", isAdmin, async (req, res) => {
   try {
     const { taskId } = req.body;
 
-    // Find the task room by ID and delete it
     const deleteTask = await Tasks.findByIdAndDelete(taskId);
 
     if (!deleteTask) {
@@ -218,7 +205,6 @@ router.delete("/deleteEmployee", isAdmin, async (req, res) => {
   try {
     const { employeeId } = req.body; //taking the employee id not the userId
 
-    // Find the task room by ID and delete it
     const deleteEmployee = await Employee.findByIdAndDelete(employeeId);
 
     if (!deleteEmployee) {
@@ -261,7 +247,6 @@ router.delete("/deleteEmployee", isAdmin, async (req, res) => {
 //     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjQ0NDFkYzc5NDEzMWE4NWM2OWYwMGUiLCJpYXQiOjE3MTU3NDkzNDB9.-MR-3ycxAGAz-D0qwTKnsXWMjsbd-kiR9Vw0mqYzBDg"
 // }
 
-
 // {
 //   "message": "user created succesfully",
 //   "user": {
@@ -271,8 +256,6 @@ router.delete("/deleteEmployee", isAdmin, async (req, res) => {
 //   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjQ0OGZmYTRlMmI0MGM5ZTgxZTcyODAiLCJpYXQiOjE3MTU3NjkzMzh9.bPaCLYTnmlqFGm-P2JKJ6w2idSstktPPMWZeF8Ro3hI"
 // }
 
-
-// things left in the backend 
-// update the task fields by the admin 
+// things left in the backend
+// update the task fields by the admin
 // update task status by employee and add a description of the task
-// employee route getting UserId and hence cannot display names

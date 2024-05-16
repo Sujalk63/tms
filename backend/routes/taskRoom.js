@@ -182,43 +182,69 @@ router.delete("/deleteTaskRoom", isAdmin, async (req, res) => {
   }
 });
 
-// delete task
-router.delete("/deleteTask", isAdmin, async (req, res) => {
-  try {
-    const { taskId } = req.body;
-
-    const deleteTask = await Tasks.findByIdAndDelete(taskId);
-
-    if (!deleteTask) {
-      return res.status(404).json({ error: "Task not found" });
-    }
-
-    res.status(200).json({ message: "Task deleted successfully" });
-  } catch (err) {
-    console.error("Error deleting task:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
 // delete employee
 router.delete("/deleteEmployee", isAdmin, async (req, res) => {
   try {
-    const { employeeId } = req.body; //taking the employee id not the userId
+    const { userId, taskRoomId } = req.body;
 
-    const deleteEmployee = await Employee.findByIdAndDelete(employeeId);
+    // Step 1: Remove the employee from the employees array of the TaskRoom
+    const updatedTaskRoom = await TaskRoom.findByIdAndUpdate(
+      taskRoomId,
+      { $pull: { employees: userId } }, // Use $pull to remove the employeeId from the array
+      { new: true }
+    );
 
-    if (!deleteEmployee) {
-      return res.status(404).json({ error: "employee not found" });
+    if (!updatedTaskRoom) {
+      return res.status(404).json({ error: "Task room not found" });
     }
 
-    res.status(200).json({ message: "employee deleted successfully" });
+    res.status(200).json({ message: "Employee deleted successfully" });
   } catch (err) {
     console.error("Error deleting employee:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// only for deleting purpose of employees we have used the objId of the employee, rest everywhere to deal employees we have used the userId which is a refernce to the usres document
+
+router.delete("/deleteTaskFromRoom", isAdmin, async (req, res) => {
+  try {
+    const { taskId, taskRoomId } = req.body;
+
+    // Find the task room by ID
+    const taskRoom = await TaskRoom.findById(taskRoomId);
+
+    if (!taskRoom) {
+      return res.status(404).json({ error: "Task room not found" });
+    }
+
+    // Remove the task from the tasks array of the task room
+    const updatedTaskRoom = await TaskRoom.findByIdAndUpdate(
+      taskRoomId,
+      { $pull: { tasks: taskId } },
+      { new: true }
+    );
+
+    if (!updatedTaskRoom) {
+      return res.status(404).json({ error: "Task not found in the task room" });
+    }
+
+    const deletedTask = await Tasks.findByIdAndDelete(taskId);
+
+    if (!deletedTask) {
+      return res
+        .status(404)
+        .json({ error: "Task not found in the Tasks collection" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Task deleted from the task room ans task successfully" });
+  } catch (err) {
+    console.error("Error deleting task from task room:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 //   {
 //     "message": "user created succesfully",

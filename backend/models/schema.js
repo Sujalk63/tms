@@ -59,8 +59,8 @@ const tasksSchema = new Schema({
   },
   taskStatus: {
     type: String,
-    required: true,
     enum: ["stuck", "completed", "incomplete"],
+    default: "incomplete"
   },
   priority: {
     type: String,

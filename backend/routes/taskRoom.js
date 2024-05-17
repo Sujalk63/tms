@@ -205,7 +205,6 @@ router.delete("/deleteEmployee", isAdmin, async (req, res) => {
   }
 });
 
-
 router.delete("/deleteTaskFromRoom", isAdmin, async (req, res) => {
   try {
     const { taskId, taskRoomId } = req.body;
@@ -238,13 +237,42 @@ router.delete("/deleteTaskFromRoom", isAdmin, async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Task deleted from the task room ans task successfully" });
+      .json({
+        message: "Task deleted from the task room ans task successfully",
+      });
   } catch (err) {
     console.error("Error deleting task from task room:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
+// update routes for admin and emplyee
+
+router.put("/updateTaskDetails", isAdmin, async (req, res) => {
+  try {
+    const { taskId, priority, title, description } = req.body;
+
+    const updatedTask = await Tasks.findByIdAndUpdate(
+      taskId,
+      { priority, title, description },
+      { new: true }
+    );
+
+    if (!updatedTask) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    res
+      .status(200)
+      .json({
+        message: "Task details updated successfully",
+        task: updatedTask,
+      });
+  } catch (err) {
+    console.error("Error updating task details:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 //   {
 //     "message": "user created succesfully",

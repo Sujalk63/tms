@@ -274,6 +274,28 @@ router.put("/updateTaskDetails", isAdmin, async (req, res) => {
   }
 });
 
+router.put("/updateTaskStatus", async (req, res) => {
+  try {
+    const { taskId, status, description } = req.body;
+
+    // Find the task by ID and update its status and description
+    const updatedTask = await Tasks.findByIdAndUpdate(
+      taskId,
+      { taskStatus: status, $set: { taskDescription: description } },
+      { new: true } // Set {new: true} to return the updated document
+    );
+
+    if (!updatedTask) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
+    res.status(200).json({ message: "Task status updated successfully", task: updatedTask });
+  } catch (err) {
+    console.error("Error updating task status:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 //   {
 //     "message": "user created succesfully",
 //     "user": {

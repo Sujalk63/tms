@@ -11,7 +11,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>x
+      <BrowserRouter>
         <Routes>
           <Route path="/signup" element={<Signup></Signup>}></Route>
           {/* <Route path="/signin" element={<Signin></Signin>}></Route>

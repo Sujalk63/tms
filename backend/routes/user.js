@@ -18,7 +18,7 @@ router.post("/signup", upload.single("image"), async (req, res) => {
   try {
     //extracting user details from the body
     const { username, password, role } = req.body;
-    const profilePic = req.file.filename;
+    // const profilePic = req.file.filename;
     const { success } = signUpSchema.safeParse({ username, password, role });
 
     if (!success) {
@@ -46,7 +46,7 @@ router.post("/signup", upload.single("image"), async (req, res) => {
       username,
       password: hashedPassword,
       role,
-      profilePic,
+      
     });
 
     if (role === "employee") {

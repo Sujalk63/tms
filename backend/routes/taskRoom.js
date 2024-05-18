@@ -278,7 +278,6 @@ router.put("/updateTaskStatus", async (req, res) => {
   try {
     const { taskId, status, description } = req.body;
 
-    // Find the task by ID and update its status and description
     const updatedTask = await Tasks.findByIdAndUpdate(
       taskId,
       { taskStatus: status, $set: { taskDescription: description } },

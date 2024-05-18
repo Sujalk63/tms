@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 const { User, Employee, TaskRoom } = require("../models/schema");
 const router = express.Router();
+const upload = require("../middleware/multer");
 
 // creating zod schema for validating inputs
 const signUpSchema = zod.object({
@@ -13,10 +14,11 @@ const signUpSchema = zod.object({
   role: zod.enum(["admin", "employee"]), // Validate role as enum
 });
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", upload.single("image"), async (req, res) => {
   try {
     //extracting user details from the body
     const { username, password, role } = req.body;
+    const profilePic = req.file.filename;
     const { success } = signUpSchema.safeParse({ username, password, role });
 
     if (!success) {
@@ -44,6 +46,7 @@ router.post("/signup", async (req, res) => {
       username,
       password: hashedPassword,
       role,
+      profilePic,
     });
 
     if (role === "employee") {

@@ -21,6 +21,9 @@ const userSchema = new Schema(
       enum: ["admin", "employee"], //chosse any one value out of two
       required: true,
     },
+    profilePic: {
+      type: String,
+    }
   },
   { timestamps: true }
 );

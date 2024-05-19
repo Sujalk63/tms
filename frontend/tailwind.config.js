@@ -4,12 +4,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        customBgFaded: "#1B2231", // Adjust opacity as needed
+        customBgLight: "#2D3C5A",               //graphic design
+        customBg: "#151D2F",                    // bg dark
+        customColor: "#2B304D",                 // form light color
+        customColorLight : "#3F4365",           // input lightest color
+        customSideColor : "#EEAA74",            // signup yellow light
+        customSideColorDark : "#D5965B",        //signup yellow dark
       },
       boxShadow: {
         neon: '0 0 10px 5px #1A2331', // Adjust shadow color and size as needed
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-hero-patterns')],
 };

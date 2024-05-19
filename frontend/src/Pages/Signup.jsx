@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+// import { response } from "express";  importing a backend library in a frontend dir can cause such problems
 
 export const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [profilePic, setProfilePic] = useState(null);
+  const [alert, setAlert] = useState(null);
+
+  useEffect(() => {
+    let timeoutId;
+    if (alert) {
+      timeoutId = setTimeout(() => {
+        setAlert("");
+      }, 3000);
+    }
+    return () => clearTimeout(timeoutId);
+  }, [alert]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,22 +35,31 @@ export const Signup = () => {
         "http://localhost:4000/api/v1/users/signup",
         userData
       );
-      console.log(response.data); // Log the response data
+      const message = response.data.message;
+      console.log(message);
+      localStorage.setItem("token", response.data.token);
+      if (response.data) {
+        setAlert(message);
+      }
     } catch (error) {
-      console.error("Error:", error);
+      if (error.response && error.response.data) {
+        const message = error.response.data.message;
+        console.log(message);
+        setAlert(message);
+      } else {
+        console.log("An unexpected error occurred:", error);
+        setAlert("An unexpected error occurred.");
+      }
     }
-
-    // Add code to handle form submission
-    console.log(userData);
   };
 
   return (
-    <div className="w-full h-full bg-gray flex justify-center items-center">
+    <div className="w-full h-full bg-gray flex justify-center items-center bg-customBg   bg-repeat text-primary-100 heropattern-topography-customBgLight">
       {/* <div className="absolute inset-y-0 left-0 h-full w-1/3 bg-customBgFaded"></div> */}
-      <div className="absolute inset-y-0 left-0 top-60 h-40 w-40 rounded-full bg-customBgFaded shadow-neon animate-neon-glow"></div>
+      {/* <div className="absolute inset-y-0 left-0 top-60 h-40 w-40 rounded-full  shadow-neon animate-neon-glow"></div> */}
 
-      <div className="w-1/3 p-8 rounded-3xl mx-2 bg-gray-800 flex-col justify-center ">
-        <h2 className="text-2xl font-bold mb-5 text-center text-white">
+      <div className="w-1/3 p-8 rounded-3xl bg-customColor flex-col justify-center items-center ">
+        <h2 className="text-2xl font-bold pb-1 mb-7 ml-auto mr-auto text-white w-1/2 border-b-4 border-customSideColor">
           Sign Up to the TMS
         </h2>
         {/* <div class="w-20 h-20 bg-white rounded-full mb-5 ml-auto mr-auto"></div> */}
@@ -48,7 +69,9 @@ export const Signup = () => {
             className="cursor-pointer flex-col items-center justify-center "
           >
             <div className="w-20 h-20 bg-white rounded-full mb-1"></div>
-            <a className="text-sm  text-center text-blue-500">Profile Upload</a>
+            <a className="text-sm  text-center text-customSideColor">
+              Profile Upload
+            </a>
           </label>
         </div>
 
@@ -57,10 +80,10 @@ export const Signup = () => {
             <input
               type="text"
               id="username"
-              autocomplete="off"
+              autoComplete="off"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="border border-gray-700 rounded-lg px-4 py-3 w-full bg-gray-800 placeholder-gray focus:outline-none text-white"
+              className="border border-gray-700 rounded-lg px-4 py-3 w-full bg-customColorLight placeholder-gray focus:outline-none text-white"
               required
               placeholder="Username"
             />
@@ -69,10 +92,10 @@ export const Signup = () => {
             <input
               type="password"
               id="password"
-              autocomplete="off"
+              autoComplete="off"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="border border-gray-700 rounded-lg px-4 py-3 w-full bg-gray-800 placeholder-gray focus:outline-none text-white"
+              className="border border-gray-700 rounded-lg px-4 py-3 w-full bg-customColorLight placeholder-gray focus:outline-none text-white"
               placeholder="pasword@123"
               required
             />
@@ -82,7 +105,7 @@ export const Signup = () => {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="border border-gray-700 rounded-lg px-4 py-3 w-full bg-gray-800 focus:outline-none placeholder-gray text-white"
+              className="border border-gray-700 rounded-lg px-4 py-3 w-full bg-customColorLight focus:outline-none placeholder-gray text-white"
               required
             >
               <option value="">Role</option>
@@ -95,17 +118,22 @@ export const Signup = () => {
               type="file"
               id="profilePic"
               onChange={(e) => setProfilePic(e.target.files[0])}
-              className="border border-gray-700 rounded-md px-4 py-2 w-full bg-gray-800  focus:outline-none hidden"
+              className="border border-gray-700 rounded-md px-4 py-2 w-full bg-customColorLight  focus:outline-none hidden"
             />
           </div> */}
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-full w-full"
+            className="bg-customSideColor hover:bg-customSideColorDark text-black font-semibold py-3 px-4 rounded-full w-full"
           >
             Sign Up
           </button>
         </form>
       </div>
+      {alert && (
+        <div className="absolute bottom-4 right-4 bg-customColorLight text-white shadow-md p-4 rounded-md z-50">
+          {alert}
+        </div>
+      )}
     </div>
   );
 };

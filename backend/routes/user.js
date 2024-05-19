@@ -14,7 +14,7 @@ const signUpSchema = zod.object({
   role: zod.enum(["admin", "employee"]), // Validate role as enum
 });
 
-router.post("/signup", upload.single("image"), async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     //extracting user details from the body
     const { username, password, role } = req.body;
@@ -33,7 +33,7 @@ router.post("/signup", upload.single("image"), async (req, res) => {
     });
 
     if (existingUser) {
-      res.status(400).json({
+      return res.status(400).json({ //if not given return it will runn the program and let create user with same username
         message: "User already exists",
       });
     }
@@ -106,7 +106,7 @@ router.post("/signin", async (req, res) => {
     });
 
     if (!user) {
-      res.status(400).json({
+      return res.status(400).json({
         message: "User doesn't exists",
       });
     }

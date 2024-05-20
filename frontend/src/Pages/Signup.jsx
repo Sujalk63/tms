@@ -9,6 +9,7 @@ export const Signup = () => {
   const [role, setRole] = useState("");
   const [profilePic, setProfilePic] = useState(null);
   const [alert, setAlert] = useState(null);
+  const [profilePicUrl, setProfilePicUrl] = useState(null);
 
   useEffect(() => {
     let timeoutId;
@@ -83,7 +84,16 @@ export const Signup = () => {
             htmlFor="profilePic"
             className="cursor-pointer flex-col items-center justify-center "
           >
-            <div className="w-20 h-20 bg-white rounded-full mb-1"></div>
+            <div
+              className="w-20 h-20 bg-white rounded-full mb-1"
+              style={{
+                backgroundImage: profilePicUrl
+                  ? `url(${profilePicUrl})`
+                  : "none",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            ></div>
             <a className="text-sm  text-center text-customSideColor">
               Profile Upload
             </a>
@@ -132,7 +142,19 @@ export const Signup = () => {
             <input
               type="file"
               id="profilePic"
-              onChange={(e) => setProfilePic(e.target.files[0])}
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setProfilePic(file);
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    setProfilePicUrl(reader.result);
+                  };
+                  reader.readAsDataURL(file);
+                } else {
+                  setProfilePicUrl(null);
+                }
+              }}
               className="border border-gray-700 rounded-md px-4 py-2 w-full bg-customColorLight  focus:outline-none hidden"
             />
           </div>

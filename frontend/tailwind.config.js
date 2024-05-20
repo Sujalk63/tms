@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        customBgLight: "#2D3C5A",               //graphic design
+        customBgLight: "#2D3C5A",               //graphic design light
         customBg: "#151D2F",                    // bg dark
         customColor: "#2B304D",                 // form light color
         customColorLight : "#3F4365",           // input lightest color

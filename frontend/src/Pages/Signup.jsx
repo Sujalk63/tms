@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { BottomWarning } from "../Components/BottomWarning";
 // import { response } from "express";  importing a backend library in a frontend dir can cause such problems
 
 export const Signup = () => {
@@ -23,17 +24,34 @@ export const Signup = () => {
     e.preventDefault();
     // const formData = { username, password, role, profilePic };
 
-    const userData = {
-      username,
-      password,
-      role,
-      profilePic,
-    };
+    // const userData = {
+    //   username,
+    //   password,
+    //   role,
+    //   profilePic,
+    // };
+
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("role", role);
+    if (profilePic) {
+      formData.append("image", profilePic); // Note: "image" should match the field name in multer.single("image")
+    }
 
     try {
+      //   const response = await axios.post(
+      //     "http://localhost:4000/api/v1/users/signup",
+      //     userData
+      //   );
       const response = await axios.post(
         "http://localhost:4000/api/v1/users/signup",
-        userData
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       const message = response.data.message;
       console.log(message);
@@ -55,10 +73,7 @@ export const Signup = () => {
 
   return (
     <div className="w-full h-full bg-gray flex justify-center items-center bg-customBg   bg-repeat text-primary-100 heropattern-topography-customBgLight">
-      {/* <div className="absolute inset-y-0 left-0 h-full w-1/3 bg-customBgFaded"></div> */}
-      {/* <div className="absolute inset-y-0 left-0 top-60 h-40 w-40 rounded-full  shadow-neon animate-neon-glow"></div> */}
-
-      <div className="w-1/3 p-8 rounded-3xl bg-customColor flex-col justify-center items-center ">
+      <div className="w-1/3 p-8 rounded-3xl bg-customColor flex-col items-center justify-center">
         <h2 className="text-2xl font-bold pb-1 mb-7 ml-auto mr-auto text-white w-1/2 border-b-4 border-customSideColor">
           Sign Up to the TMS
         </h2>
@@ -113,20 +128,25 @@ export const Signup = () => {
               <option value="employee">Employee</option>
             </select>
           </div>
-          {/* <div className="mb-4">
+          <div className="mb-4">
             <input
               type="file"
               id="profilePic"
               onChange={(e) => setProfilePic(e.target.files[0])}
               className="border border-gray-700 rounded-md px-4 py-2 w-full bg-customColorLight  focus:outline-none hidden"
             />
-          </div> */}
+          </div>
           <button
             type="submit"
             className="bg-customSideColor hover:bg-customSideColorDark text-black font-semibold py-3 px-4 rounded-full w-full"
           >
             Sign Up
           </button>
+          <BottomWarning
+            label={"Already have an account?"}
+            buttonText={"Sign in"}
+            to={"/signin"}
+          />
         </form>
       </div>
       {alert && (

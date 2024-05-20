@@ -14,11 +14,12 @@ const signUpSchema = zod.object({
   role: zod.enum(["admin", "employee"]), // Validate role as enum
 });
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", upload.single("image"), async (req, res) => {
   try {
     //extracting user details from the body
     const { username, password, role } = req.body;
     // const profilePic = req.file.filename;
+    const profilePic = req.file ? req.file.filename : null;
     const { success } = signUpSchema.safeParse({ username, password, role });
 
     if (!success) {
@@ -46,7 +47,7 @@ router.post("/signup", async (req, res) => {
       username,
       password: hashedPassword,
       role,
-      
+      profilePic
     });
 
     if (role === "employee") {

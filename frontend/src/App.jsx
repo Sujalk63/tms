@@ -4,7 +4,7 @@ import {
   Routes
 } from "react-router-dom";
 import {Signup} from "./Pages/Signup"
-// import {Signin} from "./pages/Signin"
+import {Signin} from "./Pages/Signin"
 // import {Dashboard} from "./pages/Dashboard"
 
 function App() {
@@ -14,8 +14,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/signup" element={<Signup></Signup>}></Route>
-          {/* <Route path="/signin" element={<Signin></Signin>}></Route>
-          <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route> */}
+          <Route path="/signin" element={<Signin></Signin>}></Route>
+          {/* <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route> */}
         </Routes>
       </BrowserRouter>
     </>

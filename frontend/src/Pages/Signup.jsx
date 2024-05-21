@@ -39,7 +39,7 @@ export const Signup = () => {
     if (profilePic) {
       formData.append("image", profilePic); // Note: "image" should match the field name in multer.single("image")
     }
-
+    
     try {
       //   const response = await axios.post(
       //     "http://localhost:4000/api/v1/users/signup",

@@ -20,19 +20,6 @@ export const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const formData = { username, password, role, profilePic };
-
-    // const userData = {
-    //   username,
-    //   password,
-    //   role,
-    //   profilePic,
-    // };
-
-    const formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-   
 
     try {
       //   const response = await axios.post(
@@ -41,7 +28,10 @@ export const Signin = () => {
       //   );
       const response = await axios.post(
         "http://localhost:4000/api/v1/users/signin",
-        formData
+        {
+          username,
+          password,
+        }
       );
       const message = response.data.message;
       console.log(message);
@@ -115,3 +105,12 @@ export const Signin = () => {
 };
 
 export default Signin;
+
+
+// const formData = new FormData();
+    // formData.append("username", username);
+    // formData.append("password", password);
+
+    // console.log(formData); formdata thing will not work here becuz the backend needs to be configured for form data as form data is used to transfer file to backends but in sigin we aint using file here 
+
+    // When you need to upload files (such as images) along with other form data, using FormData is essential. It allows you to construct a set of key/value pairs representing form fields and their values, which can include files.

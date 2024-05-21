@@ -86,25 +86,29 @@ router.post("/signup", upload.single("image"), async (req, res) => {
 
 //  user login
 //  craeting login schema with zod for validation
-const loginSchema = zod.object({
-  username: zod.string().min(3).max(20),
-  password: zod.string().min(6).max(20),
-});
+// const loginSchema = zod.object({
+//   username: zod.string().min(3).max(20),
+//   password: zod.string().min(6).max(20),
+// });
 
 router.post("/signin", async (req, res) => {
   try {
     const { username, password } = req.body;
-    const { success } = loginSchema.safeParse({ username, password });
+    // const { success } = loginSchema.safeParse({ username, password });
 
-    if (!success) {
-      res.status(400).json({
-        message: "Invalid format",
-      });
-    }
+    // if (!success) {
+    //   res.status(400).json({
+    //     message: "Invalid format",
+    //   });
+    // }
 
+    
     const user = await User.findOne({
-      username: username,
+      username,
     });
+    
+    console.log(user);
+    
 
     if (!user) {
       return res.status(400).json({

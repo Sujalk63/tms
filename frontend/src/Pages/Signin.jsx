@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BottomWarning } from "../Components/BottomWarning";
+import { useNavigate } from "react-router-dom";
 // import { response } from "express";  importing a backend library in a frontend dir can cause such problems
 
 export const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let timeoutId;
@@ -36,6 +38,7 @@ export const Signin = () => {
       const message = response.data.message;
       console.log(message);
       localStorage.setItem("token", response.data.token);
+      navigate("/dashboard")
       if (response.data) {
         setAlert(message);
       }
@@ -52,7 +55,7 @@ export const Signin = () => {
   };
 
   return (
-    <div className="w-full h-full bg-gray flex justify-center items-center bg-customBg   bg-repeat text-primary-100 heropattern-topography-customBgLight">
+    <div className="w-full h-screen bg-gray flex justify-center items-center bg-customBg   bg-repeat text-primary-100 heropattern-topography-customBgLight">
       <div className="w-1/3 p-8 rounded-3xl bg-customColor flex-col items-center justify-center">
         <h2 className="text-2xl font-bold pb-1 mb-7 ml-auto mr-auto text-white w-1/2 border-b-4 border-customSideColor">
           Sign in to the TMS

@@ -73,7 +73,7 @@ export const Signup = () => {
   };
 
   return (
-    <div className="w-full h-full bg-gray flex justify-center items-center bg-customBg   bg-repeat text-primary-100 heropattern-topography-customBgLight">
+    <div className="w-full h-screen bg-gray flex justify-center items-center bg-customBg   bg-repeat text-primary-100 heropattern-topography-customBgLight">
       <div className="w-1/3 p-8 rounded-3xl bg-customColor flex-col items-center justify-center">
         <h2 className="text-2xl font-bold pb-1 mb-7 ml-auto mr-auto text-white w-1/2 border-b-4 border-customSideColor">
           Sign Up to the TMS

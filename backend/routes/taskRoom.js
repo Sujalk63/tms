@@ -15,30 +15,39 @@ const taskSchema = zod.object({
 });
 
 // creating new taskRoom
-router.post("/newtaskroom", isAdmin, async (req, res) => {
+router.post("/newtaskroom",   async (req, res) => {
   try {
     const { roomName, description } = req.body;
+
+    // if (!success) {
+    //   res.status(400).json({
+    //     message: "Invalid format",
+    //   });
+    // }
 
     const existingTaskRoom = await TaskRoom.findOne({
       roomName: roomName,
     });
 
     if (existingTaskRoom) {
-      res.status(401).json({
+      return res.status(401).json({
         message: "a room with the same name already exists",
       });
     }
 
     const newTaskRoom = await TaskRoom.create({ roomName, description });
 
-    res.status(201).json({
-      message: "Task room created successfully",
-      taskRoom: newTaskRoom,
-    });
+    console.log(newTaskRoom);
+
+    if (newTaskRoom) {
+      res.status(200).json({
+        message: "Task room created successfully",
+      });
+    }
   } catch (err) {
+    console.error("error occured: ", err);
     res.status(400).json({
-      message: "Error creating task room",
-      error: err.errors,
+      message: err.errors,
     });
   }
 });
@@ -235,11 +244,9 @@ router.delete("/deleteTaskFromRoom", isAdmin, async (req, res) => {
         .json({ error: "Task not found in the Tasks collection" });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Task deleted from the task room ans task successfully",
-      });
+    res.status(200).json({
+      message: "Task deleted from the task room ans task successfully",
+    });
   } catch (err) {
     console.error("Error deleting task from task room:", err);
     res.status(500).json({ error: "Internal server error" });
@@ -262,12 +269,10 @@ router.put("/updateTaskDetails", isAdmin, async (req, res) => {
       return res.status(404).json({ error: "Task not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Task details updated successfully",
-        task: updatedTask,
-      });
+    res.status(200).json({
+      message: "Task details updated successfully",
+      task: updatedTask,
+    });
   } catch (err) {
     console.error("Error updating task details:", err);
     res.status(500).json({ error: "Internal server error" });
@@ -288,7 +293,9 @@ router.put("/updateTaskStatus", async (req, res) => {
       return res.status(404).json({ error: "Task not found" });
     }
 
-    res.status(200).json({ message: "Task status updated successfully", task: updatedTask });
+    res
+      .status(200)
+      .json({ message: "Task status updated successfully", task: updatedTask });
   } catch (err) {
     console.error("Error updating task status:", err);
     res.status(500).json({ error: "Internal server error" });

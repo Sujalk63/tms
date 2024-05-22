@@ -160,7 +160,7 @@ export const Signup = () => {
           </div>
           <button
             type="submit"
-            className="bg-customSideColor hover:bg-customSideColorDark text-black font-semibold py-3 px-4 rounded-full w-full"
+            className="bg-customSideColor hover:bg-customSideColorDark text-black font-semibold py-3 px-4 rounded-lg w-full"
           >
             Sign Up
           </button>

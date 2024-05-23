@@ -31,7 +31,7 @@ router.post("/newtaskroom",   async (req, res) => {
 
     if (existingTaskRoom) {
       return res.status(401).json({
-        message: "a room with the same name already exists",
+        message: "A room with the same name already exists",
       });
     }
 

@@ -6,7 +6,6 @@ import { faPlus, faMinus, faTimes } from "@fortawesome/free-solid-svg-icons";
 export const TaskRoomForm = ({ onClose, onSuccess, setRoomAlert }) => {
   const [roomName, setRoomName] = useState("");
   const [description, setDescription] = useState("");
-  // const [roomAlert, setRoomAlert] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

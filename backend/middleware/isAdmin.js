@@ -8,7 +8,7 @@ const isAdmin = async (req, res, next) => {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res
       .status(403)
-      .json({ error: "Missing or invalid authorization header" });
+      .json({ message: "Missing or invalid authorization header" });
   }
 
   const token = authHeader.split(" ")[1];

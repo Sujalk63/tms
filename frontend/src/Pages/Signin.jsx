@@ -38,10 +38,10 @@ export const Signin = () => {
       const message = response.data.message;
       console.log(message);
       localStorage.setItem("token", response.data.token);
-      navigate("/dashboard")
       if (response.data) {
         setAlert(message);
       }
+      navigate("/dashboard")
     } catch (error) {
       if (error.response && error.response.data) {
         const message = error.response.data.message;

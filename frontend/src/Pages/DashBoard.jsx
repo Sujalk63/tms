@@ -4,10 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { TaskRoomForm } from "../Components/TaskRoomForm";
 
-export const Dashboard = () => {
+export const Dashboard = ({role}) => {
   const [showForm, setShowForm] = useState(false);
   const [isRotated, setIsRotated] = useState(false);
   const [roomAlert, setRoomAlert] = useState("");
+
+
 
   useEffect(() => {
     let timeoutId;
@@ -28,6 +30,7 @@ export const Dashboard = () => {
     setShowForm(false);
     setIsRotated(false);
   };
+  const run = "run"
 
   return (
     <div className="w-full h-screen bg-customBg">
@@ -39,7 +42,7 @@ export const Dashboard = () => {
           setRoomAlert={setRoomAlert}
         ></TaskRoomForm>
       ) : null}
-      <button
+      {role === "admin" && (<button
         onClick={handleButtonClick}
         className="w-16 h-16 transition duration-100 ease-in-out flex justify-center items-center absolute bottom-10 right-10 bg-customSideColor hover:bg-customSideColorDark text-white p-4 rounded-full z-50"
       >
@@ -49,7 +52,7 @@ export const Dashboard = () => {
           }`}
           icon={faPlus}
         />
-      </button>
+      </button>)}
       {roomAlert && (
         <div className="transition duration-200 ease-in-out absolute bottom-[5.5%] right-[8%] bg-customColorLight text-white shadow-md p-4 rounded-md z-50">
           {roomAlert}

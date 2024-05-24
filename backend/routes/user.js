@@ -34,7 +34,8 @@ router.post("/signup", upload.single("image"), async (req, res) => {
     });
 
     if (existingUser) {
-      return res.status(400).json({ //if not given return it will runn the program and let create user with same username
+      return res.status(400).json({
+        //if not given return it will runn the program and let create user with same username
         message: "User already exists",
       });
     }
@@ -47,7 +48,7 @@ router.post("/signup", upload.single("image"), async (req, res) => {
       username,
       password: hashedPassword,
       role,
-      profilePic
+      profilePic,
     });
 
     if (role === "employee") {
@@ -60,6 +61,7 @@ router.post("/signup", upload.single("image"), async (req, res) => {
     const token = jwt.sign(
       {
         userId: user._id,
+        role: role,
       },
       JWT_SECRET
     );
@@ -102,13 +104,13 @@ router.post("/signin", async (req, res) => {
     //   });
     // }
 
-    
     const user = await User.findOne({
       username,
     });
-    
+
     console.log(user);
-    
+
+    const role = user.role;
 
     if (!user) {
       return res.status(400).json({
@@ -128,6 +130,7 @@ router.post("/signin", async (req, res) => {
       const token = jwt.sign(
         {
           userId: user._id,
+          role: role,
         },
         JWT_SECRET
       );
@@ -135,6 +138,7 @@ router.post("/signin", async (req, res) => {
       res.json({
         message: "user login successfull",
         token: token,
+        role: role,
       });
       return;
     }

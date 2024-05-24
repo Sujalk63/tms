@@ -38,7 +38,7 @@ export const TaskRoomForm = ({ onClose, onSuccess, setRoomAlert }) => {
   return (
     <div className="absolute top-[55%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/5 p-8 rounded-lg bg-customColor flex-col items-center justify-center ">
       <button onClick={onClose} className="absolute top-1 right-2 text-white">
-        <FontAwesomeIcon icon={faTimes} />
+        <FontAwesomeIcon className="text-lg" icon={faTimes} />
       </button>
       <h2 className="text-lg font-bold pb-1 mb-7 ml-auto mr-auto text-white w-1/2 border-b-4 border-customSideColor text-center">
         Create <br /> Task Room

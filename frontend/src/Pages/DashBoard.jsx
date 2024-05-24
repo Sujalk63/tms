@@ -3,13 +3,15 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { TaskRoomForm } from "../Components/TaskRoomForm";
+import { useAuth } from "../AuthContext";
 
-export const Dashboard = ({role}) => {
+export const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
   const [isRotated, setIsRotated] = useState(false);
   const [roomAlert, setRoomAlert] = useState("");
+  const { role } = useAuth();
 
-
+  console.log(role);
 
   useEffect(() => {
     let timeoutId;
@@ -30,7 +32,7 @@ export const Dashboard = ({role}) => {
     setShowForm(false);
     setIsRotated(false);
   };
-  const run = "run"
+  const run = "run";
 
   return (
     <div className="w-full h-screen bg-customBg">
@@ -42,17 +44,19 @@ export const Dashboard = ({role}) => {
           setRoomAlert={setRoomAlert}
         ></TaskRoomForm>
       ) : null}
-      {role === "admin" && (<button
-        onClick={handleButtonClick}
-        className="w-16 h-16 transition duration-100 ease-in-out flex justify-center items-center absolute bottom-10 right-10 bg-customSideColor hover:bg-customSideColorDark text-white p-4 rounded-full z-50"
-      >
-        <FontAwesomeIcon
-          className={`text-5xl transition-transform duration-300 ${
-            isRotated ? "rotate-45" : ""
-          }`}
-          icon={faPlus}
-        />
-      </button>)}
+      {role === "admin" && (
+        <button
+          onClick={handleButtonClick}
+          className="w-16 h-16 transition duration-100 ease-in-out flex justify-center items-center absolute bottom-10 right-10 bg-customSideColor hover:bg-customSideColorDark text-white p-4 rounded-full z-50"
+        >
+          <FontAwesomeIcon
+            className={`text-5xl transition-transform duration-300 ${
+              isRotated ? "rotate-45" : ""
+            }`}
+            icon={faPlus}
+          />
+        </button>
+      )}
       {roomAlert && (
         <div className="transition duration-200 ease-in-out absolute bottom-[5.5%] right-[8%] bg-customColorLight text-white shadow-md p-4 rounded-md z-50">
           {roomAlert}

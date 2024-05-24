@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BottomWarning } from "../Components/BottomWarning";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
+import { jwtDecode } from "jwt-decode";
 // import { response } from "express";  importing a backend library in a frontend dir can cause such problems
 
 export const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState(null);
+  const { setRole, setUserId } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,10 +27,6 @@ export const Signin = () => {
     e.preventDefault();
 
     try {
-      //   const response = await axios.post(
-      //     "http://localhost:4000/api/v1/users/signup",
-      //     userData
-      //   );
       const response = await axios.post(
         "http://localhost:4000/api/v1/users/signin",
         {
@@ -36,12 +35,20 @@ export const Signin = () => {
         }
       );
       const message = response.data.message;
+
+      localStorage.setItem("token", response.data.token);
+
+      // Decode the token and update context
+      const decodedToken = jwtDecode(response.data.token);
+      setUserId(decodedToken.userId);
+      setRole(decodedToken.role);
+
       console.log(message);
       localStorage.setItem("token", response.data.token);
       if (response.data) {
         setAlert(message);
       }
-      navigate("/dashboard")
+      navigate("/dashboard");
     } catch (error) {
       if (error.response && error.response.data) {
         const message = error.response.data.message;
@@ -109,11 +116,10 @@ export const Signin = () => {
 
 export default Signin;
 
-
 // const formData = new FormData();
-    // formData.append("username", username);
-    // formData.append("password", password);
+// formData.append("username", username);
+// formData.append("password", password);
 
-    // console.log(formData); formdata thing will not work here becuz the backend needs to be configured for form data as form data is used to transfer file to backends but in sigin we aint using file here 
+// console.log(formData); formdata thing will not work here becuz the backend needs to be configured for form data as form data is used to transfer file to backends but in sigin we aint using file here
 
-    // When you need to upload files (such as images) along with other form data, using FormData is essential. It allows you to construct a set of key/value pairs representing form fields and their values, which can include files.
+// When you need to upload files (such as images) along with other form data, using FormData is essential. It allows you to construct a set of key/value pairs representing form fields and their values, which can include files.

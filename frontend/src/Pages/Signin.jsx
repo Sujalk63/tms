@@ -35,6 +35,7 @@ export const Signin = () => {
         }
       );
       const message = response.data.message;
+      console.log(message);
 
       localStorage.setItem("token", response.data.token);
 
@@ -43,7 +44,6 @@ export const Signin = () => {
       setUserId(decodedToken.userId);
       setRole(decodedToken.role);
 
-      console.log(message);
       localStorage.setItem("token", response.data.token);
       if (response.data) {
         setAlert(message);

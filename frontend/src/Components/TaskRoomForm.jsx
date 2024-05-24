@@ -9,12 +9,18 @@ export const TaskRoomForm = ({ onClose, onSuccess, setRoomAlert }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token');
     try {
       const response = await axios.post(
         "http://localhost:4000/api/v1/taskroom/newtaskroom",
         {
           roomName,
           description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Set the Authorization header
+          },
         }
       );
       const message = response.data.message;

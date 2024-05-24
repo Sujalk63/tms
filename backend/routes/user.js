@@ -95,7 +95,7 @@ router.post("/signup", upload.single("image"), async (req, res) => {
 
 router.post("/signin", async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password, role} = req.body; //role inserted to insert in jwt, which will not let login even if the username passwod is correct
     // const { success } = loginSchema.safeParse({ username, password });
 
     // if (!success) {
@@ -108,9 +108,8 @@ router.post("/signin", async (req, res) => {
       username,
     });
 
-    console.log(user);
+    // console.log(user.role); //keep it unlogged on loggin the "user dosent exists" dosent show up as alert but logs perfectly with correct pass and username
 
-    const role = user.role;
 
     if (!user) {
       return res.status(400).json({
@@ -130,7 +129,7 @@ router.post("/signin", async (req, res) => {
       const token = jwt.sign(
         {
           userId: user._id,
-          role: role,
+          role: user.role,
         },
         JWT_SECRET
       );

@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Signup } from "./Pages/Signup";
 import { Signin } from "./Pages/Signin";
 import { Dashboard } from "./Pages/DashBoard";
-import React, { useState, useEffect, useMemo } from "react";
 import { AuthProvider } from "./AuthContext";
 
 function App() {

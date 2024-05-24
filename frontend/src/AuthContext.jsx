@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => { //childrens are the components which will be inside the context provider
   const [role, setRole] = useState(null);
   const [userId, setUserId] = useState(null);
 

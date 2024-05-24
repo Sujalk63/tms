@@ -9,9 +9,7 @@ export const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
   const [isRotated, setIsRotated] = useState(false);
   const [roomAlert, setRoomAlert] = useState("");
-  const { role } = useAuth();
-
-  console.log(role);
+  const { role, userId } = useAuth();
 
   useEffect(() => {
     let timeoutId;
@@ -32,7 +30,6 @@ export const Dashboard = () => {
     setShowForm(false);
     setIsRotated(false);
   };
-  const run = "run";
 
   return (
     <div className="w-full h-screen bg-customBg">

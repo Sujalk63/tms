@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faMinus, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-export const TaskRoomForm = ({ onClose, onSuccess }) => {
+export const TaskRoomForm = ({ onClose, onSuccess, setRoomAlert }) => {
   const [roomName, setRoomName] = useState("");
   const [description, setDescription] = useState("");
-  //   const [error, setError] = useState("");
-  const [roomAlert, setAlert] = useState(null);
-
-  useEffect(() => {
-    let timeoutId;
-    if (roomAlert) {
-      timeoutId = setTimeout(() => {
-        setAlert("");
-      }, 3000);
-    }
-    return () => clearTimeout(timeoutId);
-  }, [roomAlert]);
+  // const [roomAlert, setRoomAlert] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,22 +21,26 @@ export const TaskRoomForm = ({ onClose, onSuccess }) => {
       const message = response.data.message;
       console.log(message);
       if (response.data) {
-        setAlert(message);
+        setRoomAlert(message);
+        onSuccess();
       }
     } catch (error) {
       if (error.response && error.response.data) {
         const message = error.response.data.message;
         console.log(message);
-        setAlert(message);
+        setRoomAlert(message);
       } else {
         console.log("An unexpected error occurred:", error);
-        setAlert("An unexpected error occurred.");
+        setRoomAlert("An unexpected error occurred.");
       }
     }
   };
 
   return (
     <div className="absolute top-[55%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/5 p-8 rounded-lg bg-customColor flex-col items-center justify-center ">
+      <button onClick={onClose} className="absolute top-1 right-2 text-white">
+        <FontAwesomeIcon icon={faTimes} />
+      </button>
       <h2 className="text-lg font-bold pb-1 mb-7 ml-auto mr-auto text-white w-1/2 border-b-4 border-customSideColor text-center">
         Create <br /> Task Room
       </h2>
@@ -83,11 +78,6 @@ export const TaskRoomForm = ({ onClose, onSuccess }) => {
           Create Room
         </button>
       </form>
-      {roomAlert && (
-        <div className="absolute bottom-4 right-4 bg-customColorLight text-white shadow-md p-4 rounded-md z-50">
-          {roomAlert}
-        </div>
-      )}
     </div>
   );
 };

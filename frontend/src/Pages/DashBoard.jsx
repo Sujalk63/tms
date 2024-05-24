@@ -3,27 +3,58 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { TaskRoomForm } from "../Components/TaskRoomForm";
-// import { plus } from "@heroicons/react/24/solid";
 
 export const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
-  const [buttonIcon, setButtonIcon] = useState(faPlus);
+  const [isRotated, setIsRotated] = useState(false);
+  const [roomAlert, setRoomAlert] = useState("");
+
+  useEffect(() => {
+    let timeoutId;
+    if (roomAlert) {
+      timeoutId = setTimeout(() => {
+        setRoomAlert("");
+      }, 3000);
+    }
+    return () => clearTimeout(timeoutId);
+  }, [roomAlert]);
+
+  const handleButtonClick = () => {
+    setShowForm(!showForm);
+    setIsRotated(!isRotated);
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+    setIsRotated(false);
+  };
 
   return (
     <div className="w-full h-screen bg-customBg">
       <TopNavBar username={"SujalAdmin"}></TopNavBar>
-      {/* <TaskRoomForm></TaskRoomForm> */}
-      {showForm ? <TaskRoomForm></TaskRoomForm> : null}
-      {/* <h1>is this working</h1> */}
+      {showForm ? (
+        <TaskRoomForm
+          onClose={handleCloseForm}
+          onSuccess={handleCloseForm}
+          setRoomAlert={setRoomAlert}
+        ></TaskRoomForm>
+      ) : null}
       <button
-        onClick={() => {
-          setShowForm(!showForm);
-        }}
-        className="transition duration-100 ease-in-out min-w-48 flex justify-center items-center gap-1 font absolute bottom-4 right-4 bg-customSideColor hover:bg-customSideColorDark text-black shadow-md p-4 rounded-md z-50 hover:bg-customColor"
+        onClick={handleButtonClick}
+        className="w-16 h-16 transition duration-100 ease-in-out flex justify-center items-center absolute bottom-10 right-10 bg-customSideColor hover:bg-customSideColorDark text-white p-4 rounded-full z-50"
       >
-        <span className="font-bold " >{showForm ? "Cancel Task Room" : "Insert Task Room"}</span>
-        <FontAwesomeIcon className="font-bold " icon={showForm ? faTimes : faPlus} />
+        <FontAwesomeIcon
+          className={`text-5xl transition-transform duration-300 ${
+            isRotated ? "rotate-45" : ""
+          }`}
+          icon={faPlus}
+        />
       </button>
+      {roomAlert && (
+        <div className="transition duration-200 ease-in-out absolute bottom-[5.5%] right-[8%] bg-customColorLight text-white shadow-md p-4 rounded-md z-50">
+          {roomAlert}
+        </div>
+      )}
     </div>
   );
 };

@@ -9,7 +9,8 @@ export const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
   const [isRotated, setIsRotated] = useState(false);
   const [roomAlert, setRoomAlert] = useState("");
-  const { role, userId } = useAuth();
+  // const { role, userId } = useAuth();
+  const { authState } = useAuth();
 
   useEffect(() => {
     let timeoutId;
@@ -41,7 +42,7 @@ export const Dashboard = () => {
           setRoomAlert={setRoomAlert}
         ></TaskRoomForm>
       ) : null}
-      {role === "admin" && (
+      {authState.role === "admin" && (
         <button
           onClick={handleButtonClick}
           className="w-16 h-16 transition duration-100 ease-in-out flex justify-center items-center absolute bottom-10 right-10 bg-customSideColor hover:bg-customSideColorDark text-white p-4 rounded-full z-50"

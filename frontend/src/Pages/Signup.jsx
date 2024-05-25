@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { BottomWarning } from "../Components/BottomWarning";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 // import { response } from "express";  importing a backend library in a frontend dir can cause such problems
 
 export const Signup = () => {
@@ -12,6 +13,7 @@ export const Signup = () => {
   const [alert, setAlert] = useState(null);
   const [profilePicUrl, setProfilePicUrl] = useState(null);
   const navigate = useNavigate();
+  const { setToken } = useAuth();
 
   useEffect(() => {
     let timeoutId;
@@ -59,6 +61,7 @@ export const Signup = () => {
       const message = response.data.message;
       console.log(message);
       localStorage.setItem("token", response.data.token);
+      setToken(response.data.token);
       if (response.data) {
         setAlert(message);
       }

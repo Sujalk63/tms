@@ -10,7 +10,7 @@ export const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState(null);
-  const { setRole, setUserId } = useAuth();
+  const { setToken } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,9 +40,10 @@ export const Signin = () => {
       localStorage.setItem("token", response.data.token);
 
       // Decode the token and update context
-      const decodedToken = jwtDecode(response.data.token);
-      setUserId(decodedToken.userId);
-      setRole(decodedToken.role);
+      // const decodedToken = jwtDecode(response.data.token);
+      // setUserId(decodedToken.userId);
+      // setRole(decodedToken.role);
+      setToken(response.data.token);
 
       localStorage.setItem("token", response.data.token);
       if (response.data) {

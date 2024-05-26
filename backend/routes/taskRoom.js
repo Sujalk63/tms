@@ -15,7 +15,7 @@ const taskSchema = zod.object({
 });
 
 // creating new taskRoom
-router.post("/newtaskroom", isAdmin, async (req, res) => {
+router.post("/newtaskroom", authMiddleware, isAdmin, async (req, res) => {
   try {
     const { roomName, description } = req.body;
 

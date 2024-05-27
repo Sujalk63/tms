@@ -153,4 +153,11 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+router.get("/getusers", (req, res)=>{
+  
+})
+router.get("/getemployees", (req, res)=>{
+
+})
+
 module.exports = router;
